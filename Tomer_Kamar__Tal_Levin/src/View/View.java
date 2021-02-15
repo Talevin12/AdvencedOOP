@@ -74,13 +74,13 @@ public class View {
 		naviMenu.setMinWidth(150);
 		
 		this.mainVB = new VBox();
-		
+
 		this.sp = new SplitPane(naviMenu, this.mainVB);
 		this.mainScene = new Scene(sp, 1000, 600);
 
 		//////////////////////////////////////////////////////////////////
 		
 		stage.setScene(this.sortOptionScene);
-		stage.show();  //
+		stage.show();
 	}
 }
