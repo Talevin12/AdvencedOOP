@@ -81,6 +81,6 @@ public class View {
 		//////////////////////////////////////////////////////////////////
 		
 		stage.setScene(this.sortOptionScene);
-		stage.show();
+		stage.show();  //
 	}
 }
