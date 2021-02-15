@@ -1,6 +1,5 @@
-package Model;
+package ModelCommands;
 
 public interface Command {
 	void execute();
-	void undo();
 }

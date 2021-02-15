@@ -141,8 +141,6 @@ public class View {
 	}
 	
 	public VBox showAllProducts() {
-		this.listViewProducts = new ListView<>();
-		
 		VBox root = new VBox(this.listViewProducts);
 		return root;
 	}
@@ -179,5 +177,14 @@ public class View {
 	public void setMainVBox(VBox root) {
 		this.mainVB.getChildren().clear(); 
 		this.mainVB.getChildren().add(root);
+	}
+	
+	public ListView getProductsListView() {
+		return this.listViewProducts;
+	}
+	
+	
+	public void EventHandlerToShowAllProducts(EventHandler<ActionEvent> event) {
+		this.showAllProductsBtn.setOnAction(event);
 	}
 }

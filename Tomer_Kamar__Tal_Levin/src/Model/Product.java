@@ -25,6 +25,7 @@ public class Product {
 		return this.customer;
 	}
 	
+	@Override
 	public String toString() {
 		String str = "Product name: "+ this.name +" | Bought in: "+ this.storePrice +" | Sold for: "+ this.customerPrice +
 					 " | To customer : "+ this.customer.toString() +"\n";
