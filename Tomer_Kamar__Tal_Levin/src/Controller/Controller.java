@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Model.Model;
 import ModelCommands.ModelCommands;
 import View.View;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -18,11 +19,11 @@ import Model.InvalidInputException;
 public class Controller {
 	private ModelCommands modelCommands;
 	private View view;
-	
+
 	public Controller(Model model, View view) {
 		this.modelCommands = model.getModelCommands();
 		this.view = view;
-		
+
 		EventHandler<ActionEvent> EventHandlerToAddProductBtn = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -31,37 +32,37 @@ public class Controller {
 					String catalog = ((TextField)fields.get(0)).getText(); 
 					if(catalog.isEmpty())
 						throw new InvalidInputException("No catalog number was entered");
-					
+
 					String prodName = ((TextField)fields.get(1)).getText();
-					
+
 					int storePrice = 0;
 					if(!((TextField)fields.get(2)).getText().isEmpty()) {
 						storePrice = Integer.parseInt(((TextField)fields.get(2)).getText());
 						if(storePrice < 0)
 							throw new InvalidInputException("Price must be a positive value");
 					}
-					
+
 					int customerPrice = 0;
 					if(!((TextField)fields.get(3)).getText().isEmpty()) {
 						customerPrice = Integer.parseInt(((TextField)fields.get(3)).getText());
 						if(customerPrice < 0)
 							throw new InvalidInputException("Price must be a positive value");
 					}
-				
+
 					String customerName = ((TextField)fields.get(4)).getText();
 					if(!customerName.isEmpty())
 						if(!customerName.matches("[a-zA-Z]+"))
 							throw new InvalidInputException("Customer name cannot contain non alphabetic letters");
-					
+
 					String phoneNumber = ((TextField)fields.get(5)).getText();
 					if(!phoneNumber.isEmpty())
 						if(!phoneNumber.matches("[0-9]+") || phoneNumber.length() != 10)
 							throw new InvalidInputException("Phone number must be 10 digits");
-					
-					boolean promotions = ((RadioButton)fields.get(6)).isPressed();
-					
+
+					boolean promotions = ((RadioButton)fields.get(6)).isSelected();
+
 					modelCommands.addProductCommand(catalog, prodName, storePrice, customerPrice, customerName, phoneNumber, promotions);
-					
+
 					for(Node n : fields) {
 						if(n.getClass() == TextField.class)
 							((TextField)n).clear();
@@ -82,7 +83,7 @@ public class Controller {
 			}
 		};
 		view.EventHandlerToAddProductBtn(EventHandlerToAddProductBtn);
-		
+
 		EventHandler<ActionEvent> EventHandlerToUndoBtn = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -90,7 +91,7 @@ public class Controller {
 			}
 		};
 		view.EventHandlerToUndoBtn(EventHandlerToUndoBtn);
-		
+
 		EventHandler<ActionEvent> EventHandlerToShowAllProducts = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -98,18 +99,18 @@ public class Controller {
 				ListView<String> listView = new ListView<String>();
 				for(String str : productsStr)
 					listView.getItems().add(str);
-				
+
 				view.setProductsListView(listView);
 				view.setMainVBox(view.showAllProducts());
 			}
 		};
 		view.EventHandlerToShowAllProducts(EventHandlerToShowAllProducts);
-		
+
 		EventHandler<ActionEvent> EventHandlerToFindProductBtn = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				ArrayList<Node> fields = view.getSearchProductFields();
-				
+
 				try {
 					String catalog = ((TextField)fields.get(0)).getText(); 
 					if(catalog.isEmpty())
@@ -124,7 +125,7 @@ public class Controller {
 			}
 		};
 		view.EventHandlerToFindProductBtn(EventHandlerToFindProductBtn);
-		
+
 		EventHandler<ActionEvent> EventHandlerToShowProfitBtn = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -132,11 +133,48 @@ public class Controller {
 				ListView<String> listView = new ListView<String>();
 				for(String str : profitStr)
 					listView.getItems().add(str);
-				
+
 				view.setProfitListView(listView);
 				view.setMainVBox(view.showProfit());
 			}
 		};
 		view.EventHandlerToShowProfitBtn(EventHandlerToShowProfitBtn);
-	}
+
+		EventHandler<ActionEvent> EventHandlerToSendPromotions = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				modelCommands.sendPromotion();
+			}
+		};
+		view.EventHandlerToSendPromotions(EventHandlerToSendPromotions);
+
+		EventHandler<ActionEvent> EventHandlerToShowAcceptedCustomers = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			Thread t = new Thread(() -> {
+				try {
+					ListView<String> listView = new ListView<String>();
+					String name = "";		
+					while((name = modelCommands.showAcceptedCustomer()) != null) {
+						Thread.sleep(2000);
+						String temp = name;
+						Platform.runLater(() -> {
+							listView.getItems().add(temp);
+							view.setAcceptedCustomersListView(listView);
+							view.setMainVBox(view.showAcceptedCustomersListView());
+						});
+					}
+				} catch (InterruptedException e1) {
+
+				}
+			});
+			t.start();
+		}
+		//				listView.getItems().add(name);
+		//
+		//				view.setAcceptedCustomersListView(listView);
+		//				view.setMainVBox(view.showAcceptedCustomersListView());
+	};
+	view.EventHandlerToShowAcceptedCustomers(EventHandlerToShowAcceptedCustomers);
+}
 }

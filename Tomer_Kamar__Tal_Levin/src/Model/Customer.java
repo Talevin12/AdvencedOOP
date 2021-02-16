@@ -1,6 +1,8 @@
 package Model;
 
-public class Customer {
+import Observer.CustomerReceiver;
+
+public class Customer implements CustomerReceiver{
 	private String name;
 	private String phoneNumber;
 	private boolean isAcceptPromotions;
@@ -26,6 +28,11 @@ public class Customer {
 	@Override
 	public String toString() {
 		return "Name: " + name + " | Phone number: " + phoneNumber;
+	}
+
+	@Override
+	public String receivePromotion() {
+		return "Customer name: "+ (this.name.isEmpty()? "No name" : this.name);
 	}
 	
 	

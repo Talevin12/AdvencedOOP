@@ -46,6 +46,7 @@ public class View {
 	private Button showProfit = new Button("Show profit");
 	private Button deleteAllBtn = new Button("Delete all products");
 	private Button sendPromotionBtn = new Button("Send promotions");
+	private Button showAcceptedCustomers = new Button("Customers confirmed");
 	private Button exitBtn = new Button("Exit");
 	
 	private TextField catalogNumTF = new TextField();
@@ -67,7 +68,7 @@ public class View {
 	
 	private ListView<String> profitListView;
 	
-	private ListView<String> approvedPromotionListView = new ListView<>();
+	private ListView<String> AcceptedPromotionListView;
 	
 	public View(Stage stage) {
 		this.root = new Group();
@@ -95,7 +96,7 @@ public class View {
 
 		//////////////////////////////////////////////////////////////////
 		
-		VBox naviMenu = new VBox(addProductBtn, undoBtn, showAllProductsBtn, searchProductBtn, showProfit, deleteAllBtn, sendPromotionBtn, exitBtn);
+		VBox naviMenu = new VBox(addProductBtn, undoBtn, showAllProductsBtn, searchProductBtn, showProfit, deleteAllBtn, sendPromotionBtn, showAcceptedCustomers, exitBtn);
 		addProductBtn.setOnAction(e->{this.mainVB.getChildren().clear(); this.mainVB.getChildren().add(addProductView());});
 		searchProductBtn.setOnAction(e->{this.mainVB.getChildren().clear(); this.mainVB.getChildren().add(searchProduct());});
 		exitBtn.setOnAction(e->{stage.close();});
@@ -175,8 +176,8 @@ public class View {
 		return root;
 	}
 	
-	public VBox showApprovedList() {
-		VBox root = new VBox(this.approvedPromotionListView);
+	public VBox showAcceptedCustomersListView() {
+		VBox root = new VBox(this.AcceptedPromotionListView);
 		return root;
 	}
 	
@@ -191,6 +192,10 @@ public class View {
 	
 	public void setProfitListView(ListView<String> listView) {
 		this.profitListView = listView;
+	}
+	
+	public void setAcceptedCustomersListView(ListView<String> listView) {
+		this.AcceptedPromotionListView = listView;
 	}
 	
 	public ArrayList<Node> getAddProductFields(){
@@ -236,5 +241,13 @@ public class View {
 	
 	public void EventHandlerToShowProfitBtn(EventHandler<ActionEvent> event) {
 		this.showProfit.setOnAction(event);
+	}
+	
+	public void EventHandlerToSendPromotions(EventHandler<ActionEvent> event) {
+		this.sendPromotionBtn.setOnAction(event);
+	}
+	
+	public void EventHandlerToShowAcceptedCustomers(EventHandler<ActionEvent> event) {
+		this.showAcceptedCustomers.setOnAction(event);
 	}
 }

@@ -1,10 +1,12 @@
 package ModelCommands;
 
 import Model.Model;
+import javafx.scene.control.ListView;
 
-public class ModelCommands implements Command {
+public class ModelCommands extends Thread implements Command {
 
 	private Model model;
+	private int currNameIndex;
 	
 	public ModelCommands(Model model) {
 		this.model = model;
@@ -48,8 +50,27 @@ public class ModelCommands implements Command {
 
 	@Override
 	public void sendPromotion() {
-		// TODO Auto-generated method stub
+		this.model.sendPromotions();
 
 	}
+	
+	@Override
+	public String showAcceptedCustomer() {
+		String[] names = this.model.getAcceptedPrompotionCustomers();
+		if(this.currNameIndex == names.length) {
+			this.currNameIndex = 0;
+			return null;
+		}
+//		run();
+		return names[this.currNameIndex++];
+	}
 
+//	@Override
+//	public void run() {
+//		try {
+//			Thread.sleep(2000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//	}
 }
