@@ -83,6 +83,14 @@ public class Controller {
 		};
 		view.EventHandlerToAddProductBtn(EventHandlerToAddProductBtn);
 		
+		EventHandler<ActionEvent> EventHandlerToUndoBtn = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				modelCommands.undoInsert();
+			}
+		};
+		view.EventHandlerToUndoBtn(EventHandlerToUndoBtn);
+		
 		EventHandler<ActionEvent> EventHandlerToShowAllProducts = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {

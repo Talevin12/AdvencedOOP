@@ -2,16 +2,17 @@ package Model;
 
 import java.util.Map.Entry;
 import java.util.TreeMap;
-
 import ModelCommands.ModelCommands;
 
 public class Model {
 	private Store store;
 	private ModelCommands modelCommands;
+	private StoreMemento memento;
 	
 	public Model() {
 		this.store = new Store();
 		this.modelCommands = new ModelCommands(this);
+		this.memento = this.store.createMemento();
 	}
 	
 	public ModelCommands getModelCommands() {
@@ -25,7 +26,13 @@ public class Model {
 	public void addProduct(String catalog, String pName, int storePrice, int custPrice, String custName, String phoneNum, boolean promotions) {
 		Product product = new Product(pName, storePrice, custPrice, new Customer(custName, phoneNum, promotions));
 		
+		this.memento = this.store.createMemento();
+		
 		this.store.getAllProducts().put(catalog, product);
+	}
+	
+	public void undoInsert() {
+		this.store.setMemento(this.memento);
 	}
 	
 	public String[] showAllProducts() {

@@ -10,8 +10,16 @@ public class Store {
 		this.allProducts = new TreeMap<>(new ascendingComparator());
 	}
 	
-	public TreeMap<String, Product> getAllProducts(){
-		return this.allProducts;
+	public TreeMap<String, Product> getAllProducts() {
+		return allProducts;
+	}
+	
+	public StoreMemento createMemento() {
+		return new StoreMemento(getAllProducts());
+	}
+	
+	public void setMemento(StoreMemento memento) {
+		this.allProducts = memento.getMemento();
 	}
 	
 	private class ascendingComparator implements Comparator<String>{
@@ -34,4 +42,16 @@ public class Store {
 			return 1;
 		}
 	}
+	
+//	public class allProductsMemento{
+//		private TreeMap<String, Product> allProductsMemento;
+//		
+//		private allProductsMemento(TreeMap<String, Product> m) {
+//			allProductsMemento = m;
+//		}
+//		
+//		private TreeMap<String, Product> getMemento() {
+//			return allProductsMemento;
+//		}
+//	}
 }

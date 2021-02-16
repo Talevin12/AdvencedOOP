@@ -222,6 +222,10 @@ public class View {
 		this.showAllProductsBtn.setOnAction(event);
 	}
 	
+	public void EventHandlerToUndoBtn(EventHandler<ActionEvent> event) {
+		this.undoBtn.setOnAction(event);
+	}
+	
 	public void EventHandlerToAddProductBtn(EventHandler<ActionEvent> event) {
 		this.addProdSubmitBtn.setOnAction(event);
 	}

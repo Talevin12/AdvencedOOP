@@ -16,9 +16,8 @@ public class ModelCommands implements Command {
 	}
 
 	@Override
-	public boolean undo() {
-		// TODO Auto-generated method stub
-		return false;
+	public void undoInsert() {
+		model.undoInsert();
 	}
 
 	@Override

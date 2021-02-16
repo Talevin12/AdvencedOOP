@@ -4,7 +4,7 @@ public interface Command {
 	
 	void addProductCommand(String catalog, String pName, int storePrice, int custPrice, String custName, String phoneNum, boolean promotions);
 	
-	boolean undo();
+	void undoInsert();
 	
 	String[] showAllProducts();
 	
