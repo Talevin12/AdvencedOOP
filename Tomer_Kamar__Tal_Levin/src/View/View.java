@@ -1,10 +1,14 @@
 package View;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -61,7 +65,7 @@ public class View {
 	private Button findCatalogBtn = new Button("Search");
 	private Text foundProductTxt;
 	
-//	private TableView<Product> profitTV;
+	private ListView<String> profitListView;
 	
 	private ListView<String> approvedPromotionListView = new ListView<>();
 	
@@ -94,6 +98,7 @@ public class View {
 		VBox naviMenu = new VBox(addProductBtn, undoBtn, showAllProductsBtn, searchProductBtn, showProfit, deleteAllBtn, sendPromotionBtn, exitBtn);
 		addProductBtn.setOnAction(e->{this.mainVB.getChildren().clear(); this.mainVB.getChildren().add(addProductView());});
 		searchProductBtn.setOnAction(e->{this.mainVB.getChildren().clear(); this.mainVB.getChildren().add(searchProduct());});
+		exitBtn.setOnAction(e->{stage.close();});
 		naviMenu.setSpacing(40);
 		naviMenu.setMaxWidth(150);
 		naviMenu.setMinWidth(150);
@@ -166,7 +171,8 @@ public class View {
 	}
 	
 	public VBox showProfit() {
-		return null;
+		VBox root = new VBox(this.profitListView);
+		return root;
 	}
 	
 	public VBox showApprovedList() {
@@ -179,12 +185,52 @@ public class View {
 		this.mainVB.getChildren().add(root);
 	}
 	
-	public ListView getProductsListView() {
-		return this.listViewProducts;
+	public void setProductsListView(ListView<String> listView) {
+		this.listViewProducts = listView;
+	}
+	
+	public void setProfitListView(ListView<String> listView) {
+		this.profitListView = listView;
+	}
+	
+	public ArrayList<Node> getAddProductFields(){
+		ArrayList<Node> fields = new ArrayList<>();
+		
+		fields.add(this.catalogNumTF);
+		fields.add(this.prodNameTF);
+		fields.add(this.storePriceTF);
+		fields.add(this.clientPriceTF);
+		fields.add(this.clientNameTF);
+		fields.add(this.phoneTF);
+		fields.add(this.promotionYesRB);
+		fields.add(this.promotionNoRB);
+		
+		return fields;
+	}
+	
+	public ArrayList<Node> getSearchProductFields(){
+		ArrayList<Node> fields = new ArrayList<>();
+		
+		fields.add(this.findCatalogNumTF);
+		fields.add(this.foundProductTxt);
+		
+		return fields;
 	}
 	
 	
 	public void EventHandlerToShowAllProducts(EventHandler<ActionEvent> event) {
 		this.showAllProductsBtn.setOnAction(event);
+	}
+	
+	public void EventHandlerToAddProductBtn(EventHandler<ActionEvent> event) {
+		this.addProdSubmitBtn.setOnAction(event);
+	}
+	
+	public void EventHandlerToFindProductBtn(EventHandler<ActionEvent> event) {
+		this.findCatalogBtn.setOnAction(event);
+	}
+	
+	public void EventHandlerToShowProfitBtn(EventHandler<ActionEvent> event) {
+		this.showProfit.setOnAction(event);
 	}
 }

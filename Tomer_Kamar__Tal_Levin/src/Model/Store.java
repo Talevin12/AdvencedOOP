@@ -1,14 +1,10 @@
 package Model;
 
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.TreeMap;
-
-import ModelCommands.ShowProductCommand;
 
 public class Store {
 	private TreeMap<String, Product> allProducts;
-	private ShowProductCommand showProdCommand;
 	
 	public Store() {
 		this.allProducts = new TreeMap<>(new ascendingComparator());
@@ -16,10 +12,6 @@ public class Store {
 	
 	public TreeMap<String, Product> getAllProducts(){
 		return this.allProducts;
-	}
-	
-	public ShowProductCommand getShowProdCommand() {
-		return this.showProdCommand = new ShowProductCommand(allProducts);
 	}
 	
 	private class ascendingComparator implements Comparator<String>{
