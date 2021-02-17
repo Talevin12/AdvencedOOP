@@ -18,8 +18,8 @@ public class ModelCommands extends Thread implements Command {
 	}
 
 	@Override
-	public void undoInsert() {
-		model.undoInsert();
+	public boolean undoInsert() {
+		return model.undoInsert();
 	}
 
 	@Override

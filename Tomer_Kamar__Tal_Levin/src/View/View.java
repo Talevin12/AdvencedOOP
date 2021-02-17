@@ -20,6 +20,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -28,7 +32,6 @@ public class View {
 	private Group root;
 	private Scene sortOptionScene;
 	private Scene mainScene;
-	public Popup popup = new Popup();
 
 	private Text sortOptionTxt;
 	private RadioButton ascOrderRB;
@@ -59,6 +62,7 @@ public class View {
 	private RadioButton promotionYesRB = new RadioButton("Yes ");
 	private RadioButton promotionNoRB = new RadioButton("No ");
 	private Button addProdSubmitBtn = new Button("Submit");
+	private Text addFeedback = new Text("The product was added!");
 	
 	private ListView<String> listViewProducts;
 	
@@ -96,17 +100,25 @@ public class View {
 
 		//////////////////////////////////////////////////////////////////
 		
-		VBox naviMenu = new VBox(addProductBtn, undoBtn, showAllProductsBtn, searchProductBtn, showProfit, deleteAllBtn, sendPromotionBtn, showAcceptedCustomers, exitBtn);
+		VBox naviMenu = new VBox(addProductBtn, undoBtn, showAllProductsBtn, searchProductBtn, showProfit, deleteAllBtn, sendPromotionBtn, showAcceptedCustomers/*, exitBtn*/);
+		
+		naviMenu.setSpacing(20);
+		
+		this.exitBtn.setMinSize(60, 30);
+		VBox naviMenuExit = new VBox(naviMenu, exitBtn);
+		naviMenuExit.setPadding(new Insets(10));
+		naviMenuExit.setSpacing(200);
+		
+		naviMenuExit.setMaxWidth(150);
+		naviMenuExit.setMinWidth(150);
+		
 		addProductBtn.setOnAction(e->{this.mainVB.getChildren().clear(); this.mainVB.getChildren().add(addProductView());});
 		searchProductBtn.setOnAction(e->{this.mainVB.getChildren().clear(); this.mainVB.getChildren().add(searchProduct());});
 		exitBtn.setOnAction(e->{stage.close();});
-		naviMenu.setSpacing(40);
-		naviMenu.setMaxWidth(150);
-		naviMenu.setMinWidth(150);
 		
 		this.mainVB = new VBox();
 
-		this.sp = new SplitPane(naviMenu, this.mainVB);
+		this.sp = new SplitPane(naviMenuExit, this.mainVB);
 		this.mainScene = new Scene(sp, 1000, 600);
 
 		//////////////////////////////////////////////////////////////////
@@ -139,7 +151,11 @@ public class View {
 		
 		addProdSubmitBtn.setMinSize(100, 50);
 		
-		VBox root = new VBox(catalogNumTF, prodNameTF, storePriceTF, clientPriceTF, clientNameTF, phoneTF, promHB, addProdSubmitBtn);
+		addFeedback.setVisible(false);
+		this.addFeedback.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		addFeedback.setFill(Color.LIMEGREEN);
+		
+		VBox root = new VBox(catalogNumTF, prodNameTF, storePriceTF, clientPriceTF, clientNameTF, phoneTF, promHB, addProdSubmitBtn, addFeedback);
 		root.setAlignment(Pos.CENTER);
 		root.setPadding(new Insets(100));
 		root.setSpacing(30);
@@ -147,6 +163,7 @@ public class View {
 	}
 	
 	public VBox showAllProducts() {
+		this.listViewProducts.setPrefHeight(this.mainScene.getHeight());
 		VBox root = new VBox(this.listViewProducts);
 		return root;
 	}
@@ -172,11 +189,13 @@ public class View {
 	}
 	
 	public VBox showProfit() {
+		this.profitListView.setPrefHeight(this.mainScene.getHeight());
 		VBox root = new VBox(this.profitListView);
 		return root;
 	}
 	
 	public VBox showAcceptedCustomersListView() {
+		this.AcceptedPromotionListView.setPrefHeight(this.mainScene.getHeight());
 		VBox root = new VBox(this.AcceptedPromotionListView);
 		return root;
 	}
@@ -211,6 +230,10 @@ public class View {
 		fields.add(this.promotionNoRB);
 		
 		return fields;
+	}
+	
+	public void changeAddFeedbackVisibility() {
+		this.addFeedback.setVisible(true);
 	}
 	
 	public ArrayList<Node> getSearchProductFields(){

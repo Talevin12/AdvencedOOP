@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import Model.InvalidInputException;
 
@@ -69,6 +70,7 @@ public class Controller {
 						else
 							((RadioButton)n).setSelected(false);
 					}
+					view.changeAddFeedbackVisibility();
 				}
 				catch(InvalidInputException e) {
 					Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -87,7 +89,16 @@ public class Controller {
 		EventHandler<ActionEvent> EventHandlerToUndoBtn = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				modelCommands.undoInsert();
+				boolean b = modelCommands.undoInsert();
+				
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				if(b)
+					alert.setContentText("Successful Action!");
+				else
+					alert.setContentText("Nothing to undo");
+				alert.show();
+				
+				view.setMainVBox(new VBox());
 			}
 		};
 		view.EventHandlerToUndoBtn(EventHandlerToUndoBtn);
@@ -144,6 +155,10 @@ public class Controller {
 			@Override
 			public void handle(ActionEvent event) {
 				modelCommands.sendPromotion();
+				
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setContentText("The Promotions Have Been Sent");
+				alert.show();
 			}
 		};
 		view.EventHandlerToSendPromotions(EventHandlerToSendPromotions);
@@ -170,10 +185,6 @@ public class Controller {
 			});
 			t.start();
 		}
-		//				listView.getItems().add(name);
-		//
-		//				view.setAcceptedCustomersListView(listView);
-		//				view.setMainVBox(view.showAcceptedCustomersListView());
 	};
 	view.EventHandlerToShowAcceptedCustomers(EventHandlerToShowAcceptedCustomers);
 }

@@ -29,8 +29,13 @@ public class Model {
 		getStore().getAllProducts().put(catalog, product);
 	}
 
-	public void undoInsert() {
-		getStore().setMemento(this.memento);
+	public boolean undoInsert() {
+		if(!getStore().getAllProducts().equals(this.memento.getMemento())) {
+			getStore().setMemento(this.memento);
+			return true;
+		}
+		else 
+			return false;
 	}
 
 	public String[] showAllProducts() {
