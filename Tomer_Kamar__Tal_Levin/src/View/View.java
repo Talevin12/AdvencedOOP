@@ -18,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -68,6 +69,7 @@ public class View {
 	
 	private TextField findCatalogNumTF = new TextField();
 	private Button findCatalogBtn = new Button("Search");
+	private Button deleteCatalogBtn = new Button("Delete");
 	private Text foundProductTxt;
 	
 	private ListView<String> profitListView;
@@ -89,7 +91,7 @@ public class View {
 		this.insertOrderRB.setToggleGroup(tgOrder);
 		
 		this.sortSubmit = new Button("Submit");
-		this.sortSubmit.setOnAction(e->{stage.setScene(mainScene);});
+//		this.sortSubmit.setOnAction(e->{stage.setScene(mainScene);});
 		
 		VBox vBoxOrderMenu = new VBox();
 		vBoxOrderMenu.getChildren().addAll(this.sortOptionTxt, this.ascOrderRB, this.descOrderRB, this.insertOrderRB, this.sortSubmit);
@@ -114,7 +116,7 @@ public class View {
 		
 		addProductBtn.setOnAction(e->{this.mainVB.getChildren().clear(); this.mainVB.getChildren().add(addProductView());});
 		searchProductBtn.setOnAction(e->{this.mainVB.getChildren().clear(); this.mainVB.getChildren().add(searchProduct());});
-		exitBtn.setOnAction(e->{stage.close();});
+		exitBtn.setOnAction(e->{Stage s = (Stage) exitBtn.getParent().getScene().getWindow(); s.close();});
 		
 		this.mainVB = new VBox();
 
@@ -122,9 +124,18 @@ public class View {
 		this.mainScene = new Scene(sp, 1000, 600);
 
 		//////////////////////////////////////////////////////////////////
-		
+
 		stage.setScene(this.sortOptionScene);
 		stage.show();
+	}
+	
+	public void setMainScene() {
+		Stage stage = new Stage();
+		stage.setTitle("Product Management System");
+		stage.setScene(this.mainScene);
+		stage.show();
+		Stage startStage = (Stage)this.sortOptionScene.getWindow();
+		startStage.close();
 	}
 	
 	private VBox addProductView() {
@@ -173,13 +184,17 @@ public class View {
 		this.findCatalogNumTF.setMaxSize(250, 80);
 		
 		this.findCatalogBtn.setMinSize(100, 50);
+		this.deleteCatalogBtn.setMinSize(100, 50);
+		HBox buttons = new HBox(findCatalogBtn, deleteCatalogBtn);
+		buttons.setSpacing(10);
+		buttons.setAlignment(Pos.CENTER);
 		
 		this.foundProductTxt = new Text();
 		
-		VBox root = new VBox(findCatalogNumTF, findCatalogBtn, foundProductTxt);
+		VBox root = new VBox(findCatalogNumTF, buttons, foundProductTxt);
 		root.setAlignment(Pos.CENTER);
 		root.setPadding(new Insets(150));
-		root.setSpacing(40);
+		root.setSpacing(25);
 		
 		return root;
 	}
@@ -203,6 +218,16 @@ public class View {
 	public void setMainVBox(VBox root) {
 		this.mainVB.getChildren().clear(); 
 		this.mainVB.getChildren().add(root);
+	}
+	
+	public ArrayList<RadioButton> getSortRadioBtn(){
+		ArrayList<RadioButton> rbArray = new ArrayList<>();
+		
+		rbArray.add(this.ascOrderRB);
+		rbArray.add(this.descOrderRB);
+		rbArray.add(this.insertOrderRB);
+		
+		return rbArray;
 	}
 	
 	public void setProductsListView(ListView<String> listView) {
@@ -245,6 +270,13 @@ public class View {
 		return fields;
 	}
 	
+	public Button getExitBtn() {
+		return this.exitBtn;
+	}
+	
+	public void EventHandlerToSortSubmitBtn(EventHandler<ActionEvent> event) {
+		this.sortSubmit.setOnAction(event);
+	}
 	
 	public void EventHandlerToShowAllProducts(EventHandler<ActionEvent> event) {
 		this.showAllProductsBtn.setOnAction(event);
@@ -262,6 +294,14 @@ public class View {
 		this.findCatalogBtn.setOnAction(event);
 	}
 	
+	public void EventHandlerToDeleteProductBtn(EventHandler<ActionEvent> event) {
+		this.deleteCatalogBtn.setOnAction(event);
+	}
+	
+	public void EventHandlerToDeleteAllBtn(EventHandler<ActionEvent> event) {
+		this.deleteAllBtn.setOnAction(event);
+	}
+	
 	public void EventHandlerToShowProfitBtn(EventHandler<ActionEvent> event) {
 		this.showProfit.setOnAction(event);
 	}
@@ -272,5 +312,13 @@ public class View {
 	
 	public void EventHandlerToShowAcceptedCustomers(EventHandler<ActionEvent> event) {
 		this.showAcceptedCustomers.setOnAction(event);
+	}
+	
+	public void Eventhandler(EventHandler<MouseEvent> event) {
+		this.sortOptionScene.setOnMouseEntered(event);
+	}
+	
+	public void EventhandlerExitBtn(EventHandler<ActionEvent> event) {
+		this.exitBtn.setOnAction(event);
 	}
 }

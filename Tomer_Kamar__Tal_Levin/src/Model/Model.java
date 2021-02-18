@@ -1,16 +1,29 @@
 package Model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Comparator;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
+
+import Model.FileIterator.ascendingComparator;
+import Model.FileIterator.descendingComparator;
 import ModelCommands.ModelCommands;
 
 public class Model {
 	private ModelCommands modelCommands;
 	private StoreMemento memento;
+//	private File productsFile;
+	private FileIterator iterator;
 
-	public Model() {
+	public Model() throws FileNotFoundException, IOException {
 		this.modelCommands = new ModelCommands(this);
-		this.memento = Store.getInstance().createMemento();
+//		this.memento = Store.getInstance().createMemento();
+//		this.productsFile = new File("products.txt");
+		this.iterator = new FileIterator();
 	}
 
 	public ModelCommands getModelCommands() {
@@ -20,17 +33,34 @@ public class Model {
 	public Store getStore() {
 		return Store.getInstance();
 	}
+	
+	public FileIterator getIterator() {
+		return this.iterator;
+	}
+	
+//	public void writeSortOption() throws FileNotFoundException, IOException {
+//		Comparator<String> comparator = (Comparator<String>) getStore().getAllProducts().comparator();
+//		
+//		if(comparator.getClass() == ascendingComparator.class)
+//			this.iterator.writeComparator(1);
+//		else if(comparator.getClass() == descendingComparator.class)
+//			this.iterator.writeComparator(2);
+//		else
+//			this.iterator.writeComparator(3);
+//	}
 
-	public void addProduct(String catalog, String pName, int storePrice, int custPrice, String custName, String phoneNum, boolean promotions) {
+	public void addProduct(String catalog, String pName, int storePrice, int custPrice, String custName, String phoneNum, boolean promotions) throws IOException {
 		Product product = new Product(pName, storePrice, custPrice, new Customer(custName, phoneNum, promotions));
 
 		this.memento = getStore().createMemento();
 
 		getStore().getAllProducts().put(catalog, product);
+		
+		this.iterator.writeProducts(getStore().getAllProducts());
 	}
-
+	
 	public boolean undoInsert() {
-		if(!getStore().getAllProducts().equals(this.memento.getMemento())) {
+		if(this.memento != null && !getStore().getAllProducts().equals(this.memento.getMemento())) {
 			getStore().setMemento(this.memento);
 			return true;
 		}
@@ -50,12 +80,30 @@ public class Model {
 		return str;
 	}
 
-	public String searchProduct(String catalog) {
+	public Product searchProduct(String catalog) {
 		Product product = getStore().getAllProducts().get(catalog);
 		if(product == null)
-			return "No such product was found :(";
-		return product.toString();
+			return null;
+		return product;
 
+	}
+	
+	public void deleteProduct(String catalog) throws FileNotFoundException, IOException {
+		this.iterator.deleteProduct(catalog);
+	}
+	
+	public void deleteAllProducts() throws FileNotFoundException, IOException, ClassNotFoundException {
+		this.iterator.deleteAllContent();
+		updateMapFromFile();
+	}
+	
+	public boolean updateMapFromFile() throws ClassNotFoundException, IOException {
+		TreeMap<String, Product> temp = iterator.readAllProducts();
+		
+		if(temp == null)
+			return false;
+		getStore().setAllProducts(temp);
+		return true;
 	}
 
 	public String[] showProfit() {

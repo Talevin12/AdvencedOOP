@@ -1,8 +1,12 @@
 package Model;
 
+import java.io.Serializable;
+
 import Observer.CustomerReceiver;
 
-public class Customer implements CustomerReceiver{
+public class Customer implements CustomerReceiver, Serializable{
+
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private String phoneNumber;
 	private boolean isAcceptPromotions;

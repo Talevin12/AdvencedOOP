@@ -1,6 +1,10 @@
 package ModelCommands;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import Model.Model;
+import Model.Product;
 import javafx.scene.control.ListView;
 
 public class ModelCommands extends Thread implements Command {
@@ -13,7 +17,7 @@ public class ModelCommands extends Thread implements Command {
 	}
 	
 	@Override
-	public void addProductCommand(String catalog, String pName, int storePrice, int custPrice, String custName, String phoneNum, boolean promotions) {
+	public void addProductCommand(String catalog, String pName, int storePrice, int custPrice, String custName, String phoneNum, boolean promotions) throws FileNotFoundException, IOException {
 		model.addProduct(catalog, pName, storePrice, custPrice, custName, phoneNum, promotions);
 	}
 
@@ -28,7 +32,7 @@ public class ModelCommands extends Thread implements Command {
 	}
 
 	@Override
-	public String searchProduct(String catalog) {
+	public Product searchProduct(String catalog) {
 		return this.model.searchProduct(catalog);
 	}
 
@@ -37,15 +41,22 @@ public class ModelCommands extends Thread implements Command {
 		return this.model.showProfit();
 	}
 
-//	@Override
-//	public boolean deleteProduct(String catalog) {
-//		return this.model.deleteProduct(catalog);
-//	}
+	@Override
+	public void deleteProduct(String catalog) {
+		try {
+			this.model.deleteProduct(catalog);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
 	@Override
-	public boolean deleteAll() {
-		// TODO Auto-generated method stub
-		return false;
+	public void deleteAll() {
+		try {
+			this.model.deleteAllProducts();
+		} catch (ClassNotFoundException | IOException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Override
