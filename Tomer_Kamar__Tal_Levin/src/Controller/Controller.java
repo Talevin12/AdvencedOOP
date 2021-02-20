@@ -42,6 +42,7 @@ public class Controller {
 			public void handle(MouseEvent event) {
 				try {
 					if(model.updateMapFromFile()) {
+						model.setMemento(model.getStore().createMemento());
 						view.setMainScene();
 					}
 				} catch (ClassNotFoundException e) {

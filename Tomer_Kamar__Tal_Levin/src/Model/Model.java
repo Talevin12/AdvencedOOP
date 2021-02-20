@@ -1,16 +1,10 @@
 package Model;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import javax.swing.text.html.HTMLDocument.Iterator;
-
-import Model.FileIterator.ascendingComparator;
-import Model.FileIterator.descendingComparator;
 import ModelCommands.ModelCommands;
 
 public class Model {
@@ -38,16 +32,9 @@ public class Model {
 		return this.iterator;
 	}
 
-	//	public void writeSortOption() throws FileNotFoundException, IOException {
-	//		Comparator<String> comparator = (Comparator<String>) getStore().getAllProducts().comparator();
-	//		
-	//		if(comparator.getClass() == ascendingComparator.class)
-	//			this.iterator.writeComparator(1);
-	//		else if(comparator.getClass() == descendingComparator.class)
-	//			this.iterator.writeComparator(2);
-	//		else
-	//			this.iterator.writeComparator(3);
-	//	}
+	public void setMemento(StoreMemento memento) {
+		this.memento = memento;
+	}
 
 	public void addProduct(String catalog, String pName, int storePrice, int custPrice, String custName, String phoneNum, boolean promotions) throws IOException {
 		Product product = new Product(pName, storePrice, custPrice, new Customer(custName, phoneNum, promotions));

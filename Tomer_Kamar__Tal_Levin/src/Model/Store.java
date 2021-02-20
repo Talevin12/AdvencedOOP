@@ -52,6 +52,8 @@ public class Store implements StoreSender {
 	
 	@Override
 	public void sendPromotions() {
+		this.observers.clear();
+		setMemento(createMemento());
 		Customer c;
 		String name;
 		for(Entry<String, Product> entry : this.allProducts.entrySet()) {
