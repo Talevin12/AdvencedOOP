@@ -122,7 +122,7 @@ public class View {
 
 		this.sp = new SplitPane(naviMenuExit, this.mainVB);
 		this.mainScene = new Scene(sp, 1000, 600);
-
+		//
 		//////////////////////////////////////////////////////////////////
 
 		stage.setScene(this.sortOptionScene);
