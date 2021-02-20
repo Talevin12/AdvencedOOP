@@ -83,13 +83,15 @@ public class FileIterator implements Iterator<Entry<String, Product>> {
 			int before = last;
 			Entry<String, Product>  entry = null;
 			while(hasNext()) {
-				for(int i = 0; i < index; i++)
+				for(int i = 0; i < index; i++) {
 					entry = next();
+				}
+				index = 2;
 				raf.seek(before);
 				raf.writeUTF(entry.getKey());
 				writeProduct(this, entry.getValue());
 				before = (int) raf.getFilePointer();
-				index++;
+				
 			}
 			raf.setLength(last);
 			last =-1;
