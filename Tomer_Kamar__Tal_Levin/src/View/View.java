@@ -46,7 +46,7 @@ public class View {
 	private Button addProductBtn = new Button("Add product");
 	private Button undoBtn = new Button("Undo last insert");
 	private Button showAllProductsBtn = new Button("Show all products");
-	private Button searchProductBtn = new Button("Search product");
+	private Button searchProductBtn = new Button("Search/Delete product");
 	private Button showProfit = new Button("Show profit");
 	private Button deleteAllBtn = new Button("Delete all products");
 	private Button sendPromotionBtn = new Button("Send promotions");
@@ -111,8 +111,8 @@ public class View {
 		naviMenuExit.setPadding(new Insets(10));
 		naviMenuExit.setSpacing(200);
 		
-		naviMenuExit.setMaxWidth(150);
-		naviMenuExit.setMinWidth(150);
+		naviMenuExit.setMaxWidth(160);
+		naviMenuExit.setMinWidth(160);
 		
 		addProductBtn.setOnAction(e->{this.mainVB.getChildren().clear(); this.mainVB.getChildren().add(addProductView());});
 		searchProductBtn.setOnAction(e->{this.mainVB.getChildren().clear(); this.mainVB.getChildren().add(searchProduct());});

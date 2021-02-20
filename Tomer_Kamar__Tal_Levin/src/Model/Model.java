@@ -88,8 +88,10 @@ public class Model {
 
 	}
 	
-	public void deleteProduct(String catalog) throws FileNotFoundException, IOException {
-		this.iterator.deleteProduct(catalog);
+	public boolean deleteProduct(String catalog) throws FileNotFoundException, IOException, ClassNotFoundException {
+		boolean res = this.iterator.deleteProduct(catalog);
+		updateMapFromFile();
+		return res;
 	}
 	
 	public void deleteAllProducts() throws FileNotFoundException, IOException, ClassNotFoundException {

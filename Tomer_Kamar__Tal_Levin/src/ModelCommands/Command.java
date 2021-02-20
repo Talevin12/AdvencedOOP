@@ -18,7 +18,7 @@ public interface Command {
 	
 	String[] showProfit();
 	
-	void deleteProduct(String catalog);
+	boolean deleteProduct(String catalog);
 	
 	void deleteAll();
 	

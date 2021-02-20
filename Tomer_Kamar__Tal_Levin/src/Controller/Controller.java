@@ -211,11 +211,13 @@ public class Controller {
 					String catalog = ((TextField)fields.get(0)).getText(); 
 					if(catalog.isEmpty())
 						throw new InvalidInputException("No catalog number was entered");
-					Product product = modelCommands.searchProduct(catalog);
-					if(product == null)
-						((Text)fields.get(1)).setText("No such product was found :(");
+					
+					if(modelCommands.deleteProduct(catalog)) {
+						((TextField)fields.get(0)).clear();
+						((Text)fields.get(1)).setText("Product Deleted!");
+					}
 					else
-						modelCommands.deleteProduct(catalog);
+						((Text)fields.get(1)).setText("No such product was found :(");
 				}catch(InvalidInputException e) {
 					Alert alert = new Alert(Alert.AlertType.ERROR);
 					alert.setContentText(e.getMsg());

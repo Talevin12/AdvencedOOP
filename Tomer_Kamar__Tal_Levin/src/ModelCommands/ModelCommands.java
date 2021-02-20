@@ -42,12 +42,18 @@ public class ModelCommands extends Thread implements Command {
 	}
 
 	@Override
-	public void deleteProduct(String catalog) {
+	public boolean deleteProduct(String catalog) {
+		boolean res = false;
 		try {
-			this.model.deleteProduct(catalog);
+			res = this.model.deleteProduct(catalog);
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
+			return false;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return false;
 		}
+		return res;
 	}
 
 	@Override
