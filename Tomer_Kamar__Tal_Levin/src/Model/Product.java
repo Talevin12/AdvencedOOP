@@ -25,7 +25,7 @@ public class Product implements Serializable{
 	}
 	
 	public int getStorePrice() {
-		return this.customerPrice-this.storePrice;
+		return this.customerPrice;
 	}
 	
 	public int getCustomerPrice() {
@@ -33,7 +33,7 @@ public class Product implements Serializable{
 	}
 	
 	public int getProfit() {
-		return this.customerPrice;
+		return this.customerPrice-this.storePrice;
 	}
 	
 	public Customer getCustomer() {

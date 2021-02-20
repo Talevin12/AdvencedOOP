@@ -94,17 +94,19 @@ public class Model {
 
 	public boolean deleteProduct(String catalog) throws FileNotFoundException, IOException, ClassNotFoundException {
 		boolean res = this.iterator.deleteProduct(catalog);
-		updateMapFromFile();
-		getStore().getObservers().remove((Product)getStore().getAllProducts().get(catalog));
-		getStore().createMemento();
+		this.memento.getMemento().remove(catalog);
+		this.memento.removeObserver(getStore().getAllProducts().get(catalog).getCustomer());
+//		getStore().getObservers().remove((Product)getStore().getAllProducts().get(catalog));
+		updateMapFromFile();		
 		return res;
 	}
 
 	public void deleteAllProducts() throws FileNotFoundException, IOException, ClassNotFoundException {
 		this.iterator.deleteAllContent();
+		getStore().getObservers().clear();	
+		this.memento.getMemento().clear();
+		this.memento.getCustomersMemento().clear();
 		updateMapFromFile();
-		getStore().getObservers().clear();
-		getStore().createMemento();
 	}
 
 	public boolean updateMapFromFile() throws ClassNotFoundException, IOException {

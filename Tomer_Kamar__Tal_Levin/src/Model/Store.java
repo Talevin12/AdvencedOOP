@@ -45,6 +45,10 @@ public class Store implements StoreSender {
 		this.observers = memento.getCustomersMemento();
 	}
 	
+//	public void removeCustomerFromMemento(StoreMemento memnto, Customer c) {
+//		memnto.removeObserver(c);
+//	}
+	
 	
 	@Override
 	public void sendPromotions() {

@@ -231,6 +231,7 @@ public class Controller {
 			@Override
 			public void handle(ActionEvent event) {
 				modelCommands.deleteAll();
+				view.setMainVBox(new VBox());
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
 				alert.setContentText("Action Performed!");
 				alert.show();
