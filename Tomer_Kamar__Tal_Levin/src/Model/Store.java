@@ -37,12 +37,14 @@ public class Store implements StoreSender {
 	}
 	
 	public StoreMemento createMemento() {
-		return new StoreMemento(getAllProducts());
+		return new StoreMemento(getAllProducts(), getObservers());
 	}
 	
 	public void setMemento(StoreMemento memento) {
 		this.allProducts = memento.getMemento();
+		this.observers = memento.getCustomersMemento();
 	}
+	
 	
 	@Override
 	public void sendPromotions() {

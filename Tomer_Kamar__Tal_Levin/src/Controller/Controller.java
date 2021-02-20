@@ -28,7 +28,7 @@ import Model.FileIterator.insertionOrderComparator;
 import Model.InvalidInputException;
 
 public class Controller {
-	private ModelCommands modelCommands;
+	private ModelCommands modelCommands; 
 	private Model model;
 	private View view;
 

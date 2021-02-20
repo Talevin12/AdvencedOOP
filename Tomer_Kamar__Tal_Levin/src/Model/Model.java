@@ -16,13 +16,13 @@ import ModelCommands.ModelCommands;
 public class Model {
 	private ModelCommands modelCommands;
 	private StoreMemento memento;
-//	private File productsFile;
+	//	private File productsFile;
 	private FileIterator iterator;
 
 	public Model() throws FileNotFoundException, IOException {
 		this.modelCommands = new ModelCommands(this);
-//		this.memento = Store.getInstance().createMemento();
-//		this.productsFile = new File("products.txt");
+		//		this.memento = Store.getInstance().createMemento();
+		//		this.productsFile = new File("products.txt");
 		this.iterator = new FileIterator();
 	}
 
@@ -33,21 +33,21 @@ public class Model {
 	public Store getStore() {
 		return Store.getInstance();
 	}
-	
+
 	public FileIterator getIterator() {
 		return this.iterator;
 	}
-	
-//	public void writeSortOption() throws FileNotFoundException, IOException {
-//		Comparator<String> comparator = (Comparator<String>) getStore().getAllProducts().comparator();
-//		
-//		if(comparator.getClass() == ascendingComparator.class)
-//			this.iterator.writeComparator(1);
-//		else if(comparator.getClass() == descendingComparator.class)
-//			this.iterator.writeComparator(2);
-//		else
-//			this.iterator.writeComparator(3);
-//	}
+
+	//	public void writeSortOption() throws FileNotFoundException, IOException {
+	//		Comparator<String> comparator = (Comparator<String>) getStore().getAllProducts().comparator();
+	//		
+	//		if(comparator.getClass() == ascendingComparator.class)
+	//			this.iterator.writeComparator(1);
+	//		else if(comparator.getClass() == descendingComparator.class)
+	//			this.iterator.writeComparator(2);
+	//		else
+	//			this.iterator.writeComparator(3);
+	//	}
 
 	public void addProduct(String catalog, String pName, int storePrice, int custPrice, String custName, String phoneNum, boolean promotions) throws IOException {
 		Product product = new Product(pName, storePrice, custPrice, new Customer(custName, phoneNum, promotions));
@@ -55,17 +55,21 @@ public class Model {
 		this.memento = getStore().createMemento();
 
 		getStore().getAllProducts().put(catalog, product);
-		
+
 		this.iterator.writeProducts(getStore().getAllProducts());
 	}
-	
+
 	public boolean undoInsert() {
-		if(this.memento != null && !getStore().getAllProducts().equals(this.memento.getMemento())) {
-			getStore().setMemento(this.memento);
-			return true;
+		try {
+			if(this.memento != null && !getStore().getAllProducts().equals(this.memento.getMemento())) {
+				getStore().setMemento(this.memento);
+				this.iterator.writeProducts(getStore().getAllProducts());
+				return true;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		else 
-			return false;
+		return false;
 	}
 
 	public String[] showAllProducts() {
@@ -87,21 +91,25 @@ public class Model {
 		return product;
 
 	}
-	
+
 	public boolean deleteProduct(String catalog) throws FileNotFoundException, IOException, ClassNotFoundException {
 		boolean res = this.iterator.deleteProduct(catalog);
 		updateMapFromFile();
+		getStore().getObservers().remove((Product)getStore().getAllProducts().get(catalog));
+		getStore().createMemento();
 		return res;
 	}
-	
+
 	public void deleteAllProducts() throws FileNotFoundException, IOException, ClassNotFoundException {
 		this.iterator.deleteAllContent();
 		updateMapFromFile();
+		getStore().getObservers().clear();
+		getStore().createMemento();
 	}
-	
+
 	public boolean updateMapFromFile() throws ClassNotFoundException, IOException {
 		TreeMap<String, Product> temp = iterator.readAllProducts();
-		
+
 		if(temp == null)
 			return false;
 		getStore().setAllProducts(temp);
