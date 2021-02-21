@@ -90,7 +90,9 @@ public class Controller {
 					String catalog = ((TextField)fields.get(0)).getText(); 
 					if(catalog.isEmpty())
 						throw new InvalidInputException("No catalog number was entered");
-
+					if(catalog.length() != 3)
+						throw new InvalidInputException("catalog number length must be 3");
+					
 					String prodName = ((TextField)fields.get(1)).getText();
 
 					int storePrice = 0;

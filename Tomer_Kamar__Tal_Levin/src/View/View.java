@@ -139,7 +139,7 @@ public class View {
 	}
 	
 	private VBox addProductView() {
-		this.catalogNumTF.setPromptText("Product catalog number (*Required field*)");
+		this.catalogNumTF.setPromptText("Catalog number (*Required field* | length: 3)");
 		this.catalogNumTF.setMaxSize(250, 80);
 		this.prodNameTF.setPromptText("Product name");
 		this.prodNameTF.setMaxSize(250, 80);

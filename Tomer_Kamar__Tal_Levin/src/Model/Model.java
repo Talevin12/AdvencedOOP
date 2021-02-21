@@ -81,10 +81,12 @@ public class Model {
 
 	public boolean deleteProduct(String catalog) throws FileNotFoundException, IOException, ClassNotFoundException {
 		boolean res = this.iterator.deleteProduct(catalog);
-		this.memento.getMemento().remove(catalog);
-		this.memento.removeObserver(getStore().getAllProducts().get(catalog).getCustomer());
-//		getStore().getObservers().remove((Product)getStore().getAllProducts().get(catalog));
-		updateMapFromFile();		
+		if(res) {
+			this.memento.getMemento().remove(catalog);
+			this.memento.removeObserver(getStore().getAllProducts().get(catalog).getCustomer());
+			//		getStore().getObservers().remove((Product)getStore().getAllProducts().get(catalog));
+			updateMapFromFile();
+		}		
 		return res;
 	}
 

@@ -4,20 +4,19 @@ import java.io.Serializable;
 
 public class Product implements Serializable{
 	static final int INT_SIZE = 4;
+	static final int CHAR_SIZE = 2;
 
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private int storePrice;
 	private int customerPrice;
 	private Customer customer;
-	private int byteSize;
 	
 	public Product(String name, int storePrice, int customerPrice, Customer customer) {
 		this.name = name;
 		this.storePrice = storePrice;
 		this.customerPrice = customerPrice;
 		this.customer = customer;
-		this.byteSize = name.length() + INT_SIZE*2 + customer.getSize();
 	}
 	
 	public String getName() {
@@ -38,10 +37,6 @@ public class Product implements Serializable{
 	
 	public Customer getCustomer() {
 		return this.customer;
-	}
-	
-	public int getSize() {
-		return this.byteSize;
 	}
 	
 	@Override

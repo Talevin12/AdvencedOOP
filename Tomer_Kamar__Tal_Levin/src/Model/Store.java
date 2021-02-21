@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import Observer.StoreSender;
 
 public class Store implements StoreSender {
+	
 	private TreeMap<String, Product> allProducts;
 	private HashMap<Customer, String> observers;
 	private static Store singleton = null;

@@ -1,43 +1,28 @@
 package Model;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
 
 public class FileIterator implements Iterator<Entry<String, Product>> {
 	private RandomAccessFile raf;
-	private int size;
-	private int current = 0;
-	private int last = -1;
+	private long size;
+	private long current = 0;
+	private long last = -1;
 
 	public FileIterator() throws FileNotFoundException, IOException {
 		this.raf = new RandomAccessFile("products.txt", "rw");
-		size = (int) this.raf.length();
+		size = this.raf.length();
 	}
 
 	@Override
 	public boolean hasNext() {
 		return current < size;
-		//		try {
-		//			if(oIn.available() != 0)
-		//				return true;
-		//		} catch (IOException e) {
-		//			System.out.print(e.getMessage());	
-		//		}
-		//		return false;
 	}
 
 	@Override
@@ -52,9 +37,9 @@ public class FileIterator implements Iterator<Entry<String, Product>> {
 			String customerName = raf.readUTF();
 			String phone = raf.readUTF();
 			boolean promotions = raf.readBoolean();
-
+			
 			last = current;
-			current = (int) raf.getFilePointer();
+			current = raf.getFilePointer();
 
 			return new java.util.AbstractMap.SimpleEntry<String, Product>(catalog, new Product(prodName, storePrice, customerPrice, new Customer(customerName, phone, promotions)));
 
@@ -63,15 +48,6 @@ public class FileIterator implements Iterator<Entry<String, Product>> {
 		}
 
 		return null;
-
-		//		String catalog = null;
-		//		Product product = null;
-		//		try {
-		//			catalog = this.oIn.readUTF();
-		//			product = (Product) this.oIn.readObject(); 
-		//		} catch (IOException | ClassNotFoundException e) {System.out.print(e.getMessage());}
-		//		return new java.util.AbstractMap.SimpleEntry<String, Product>(catalog, product);
-		////		return catalog;
 	}
 
 	@Override
@@ -79,21 +55,20 @@ public class FileIterator implements Iterator<Entry<String, Product>> {
 		if (last == -1)
 			throw new IllegalStateException();
 		try {
-			int index = 1;
-			int before = last;
+			long before = last;
 			Entry<String, Product>  entry = null;
+			
+			
 			while(hasNext()) {
-				for(int i = 0; i < index; i++) {
-					entry = next();
-				}
-				index = 2;
+				entry = next();
 				raf.seek(before);
 				raf.writeUTF(entry.getKey());
 				writeProduct(this, entry.getValue());
-				before = (int) raf.getFilePointer();
+				before = raf.getFilePointer();
+				raf.seek(current);
 				
 			}
-			raf.setLength(last);
+			raf.setLength(before);
 			last =-1;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -136,40 +111,6 @@ public class FileIterator implements Iterator<Entry<String, Product>> {
 		return null;
 	}
 
-	//		TreeMap<String, Product> allProductsMap = null;
-	//		this.oIn = new ObjectInputStream(new FileInputStream(new File("products.txt")));
-	//
-	//		if(hasNext()) {
-	//			int sortOpt = this.oIn.readInt();
-	//
-	//			switch(sortOpt) {
-	//			case 1:
-	//				allProductsMap = new TreeMap<>(new ascendingComparator());
-	//				break;
-	//			case 2:
-	//				allProductsMap = new TreeMap<>(new descendingComparator());
-	//				break;
-	//			case 3:
-	//				allProductsMap = new TreeMap<>(new insertionOrderComparator());
-	//				break;
-	//			}
-	//
-	//			Entry<String, Product> e;
-	//			while(hasNext()) {
-	////				String key = next();
-	////				Product p = nextProduct();//(Product)this.oIn.readObject();
-	////
-	////				allProductsMap.put(key, p);
-	//				e = next();
-	//				allProductsMap.put(e.getKey(), e.getValue());
-	//			}
-	//			this.oIn.close();
-	//			return allProductsMap;
-	//		}
-	//		this.oIn.close();
-	//		return null;
-	//}
-
 	public void writeProducts(TreeMap<String, Product> treeMap) throws IOException {
 		FileIterator iterator = new FileIterator();
 		iterator.getRaf().setLength(0);
@@ -184,33 +125,13 @@ public class FileIterator implements Iterator<Entry<String, Product>> {
 
 		for(Entry<String, Product> entry : treeMap.entrySet()) {
 			iterator.getRaf().writeUTF(entry.getKey());
-			//			this.raf.writeObject(entry.getValue());
 			writeProduct(iterator, entry.getValue());
 		}
 		
 		iterator.getRaf().close();
-
-
-		//		this.oOut = new ObjectOutputStream(new FileOutputStream(new File("products.txt")));
-		//		//		this.oOut.reset();
-		//		Comparator<String> comparator = (Comparator<String>) treeMap.comparator();
-		//
-		//		if(comparator.getClass() == ascendingComparator.class)
-		//			this.oOut.writeInt(1);
-		//		else if(comparator.getClass() == descendingComparator.class)
-		//			this.oOut.writeInt(2);
-		//		else
-		//			this.oOut.writeInt(3);
-		//
-		//
-		//		for(Entry<String, Product> entry : treeMap.entrySet()) {
-		//			this.oOut.writeUTF(entry.getKey());
-		//			this.oOut.writeObject(entry.getValue());
-		//		}
-		//		this.oOut.close();
 	}
 
-	public void writeProduct(FileIterator iterator, Product product) throws IOException {
+	public void writeProduct(FileIterator iterator, Product product) throws IOException {		
 		iterator.getRaf().writeUTF(product.getName());
 		iterator.getRaf().writeInt(product.getStorePrice());
 		iterator.getRaf().writeInt(product.getCustomerPrice());
@@ -223,33 +144,18 @@ public class FileIterator implements Iterator<Entry<String, Product>> {
 		FileIterator iterator = new FileIterator();
 		iterator.getRaf().setLength(4);
 		iterator.getRaf().close();
-		//		this.oIn = new ObjectInputStream(new FileInputStream(new File("products.txt")));
-		//		int sortOpt = this.oIn.readInt();
-		//		this.oIn.close();
-		//
-		//		this.oOut = new ObjectOutputStream(new FileOutputStream(new File("products.txt")));
-		//		this.oOut.writeInt(sortOpt);
-		//		this.oOut.close();
 	}
 
 	public boolean deleteProduct(String catalog) throws FileNotFoundException, IOException {
-		//		this.oIn = new ObjectInputStream(new FileInputStream(new File("products.txt")));
-		//		oIn.readInt();
-
 		FileIterator iterator = new FileIterator();
 		iterator.getRaf().readInt();
 		iterator.current = (int) iterator.getRaf().getFilePointer();
 
-		//		String tempCatalog;
 		Entry<String, Product> entry;
 		while(iterator.hasNext()) {
-			//			tempCatalog = this.next();
 			entry = iterator.next();
-			//			if(catalog.equals(tempCatalog)) {
 			if(entry.getKey().equals(catalog)) {
 				iterator.remove();
-				//				this.nextProduct();
-				//				this.remove();
 				iterator.getRaf().close();
 				return true;
 			}			
