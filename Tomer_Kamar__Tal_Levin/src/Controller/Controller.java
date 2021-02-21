@@ -18,10 +18,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import Model.FileIterator.ascendingComparator;
 import Model.FileIterator.descendingComparator;
 import Model.FileIterator.insertionOrderComparator;
@@ -31,28 +29,14 @@ public class Controller {
 	private ModelCommands modelCommands; 
 	private Model model;
 	private View view;
-
+	
 	public Controller(Model model, View view) {
 		this.model = model;
 		this.modelCommands = this.model.getModelCommands();
 		this.view = view;
 
-		EventHandler<MouseEvent> Eventhandler = new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				try {
-					if(model.updateMapFromFile()) {
-						model.setMemento(model.getStore().createMemento());
-						view.setMainScene();
-					}
-				} catch (ClassNotFoundException e) {
-					System.out.println(e.getStackTrace());
-				} catch	(IOException e) {
-					System.out.println(e.getStackTrace());
-				}
-			}
-		};
-		view.Eventhandler(Eventhandler);
+		
+		initProducts();
 
 		EventHandler<ActionEvent> EventHandlerToSortSubmitBtn = new EventHandler<ActionEvent>() {
 			@Override
@@ -292,19 +276,18 @@ public class Controller {
 			}
 		};
 		view.EventHandlerToShowAcceptedCustomers(EventHandlerToShowAcceptedCustomers);
+	}
 
-		//		EventHandler<ActionEvent> EventhandlerExitBtn = new EventHandler<ActionEvent>() {
-		//			@Override
-		//			public void handle(ActionEvent event) {
-		//				try {
-		//					model.getIterator().closeOutputStreams();
-		//					Stage s = (Stage) view.getExitBtn().getParent().getScene().getWindow(); 
-		//					s.close();
-		//				} catch (IOException e) {
-		//					System.out.println(e.getMessage());
-		//				}
-		//			}
-		//		};
-		//		view.EventhandlerExitBtn(EventhandlerExitBtn);
+	private void initProducts() {
+		try {
+			if(model.updateMapFromFile()) {
+				this.model.setMemento(this.model.getStore().createMemento());
+				this.view.setMainScene();
+			}
+		} catch (ClassNotFoundException e) {
+			System.out.println(e.getStackTrace());
+		} catch	(IOException e) {
+			System.out.println(e.getStackTrace());
+		}
 	}
 }

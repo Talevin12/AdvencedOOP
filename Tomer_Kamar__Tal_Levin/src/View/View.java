@@ -1,6 +1,5 @@
 package View;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
@@ -14,11 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -26,7 +22,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 public class View {
@@ -91,7 +86,6 @@ public class View {
 		this.insertOrderRB.setToggleGroup(tgOrder);
 		
 		this.sortSubmit = new Button("Submit");
-//		this.sortSubmit.setOnAction(e->{stage.setScene(mainScene);});
 		
 		VBox vBoxOrderMenu = new VBox();
 		vBoxOrderMenu.getChildren().addAll(this.sortOptionTxt, this.ascOrderRB, this.descOrderRB, this.insertOrderRB, this.sortSubmit);
@@ -312,10 +306,6 @@ public class View {
 	
 	public void EventHandlerToShowAcceptedCustomers(EventHandler<ActionEvent> event) {
 		this.showAcceptedCustomers.setOnAction(event);
-	}
-	
-	public void Eventhandler(EventHandler<MouseEvent> event) {
-		this.sortOptionScene.setOnMouseEntered(event);
 	}
 	
 	public void EventhandlerExitBtn(EventHandler<ActionEvent> event) {

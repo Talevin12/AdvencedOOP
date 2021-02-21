@@ -16,7 +16,7 @@ public class program extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		Model theModel = new Model();
 		View theView = new View(primaryStage);
-		Controller TheController = new Controller(theModel, theView);
+		Controller theController = new Controller(theModel, theView);
 	}
 
 }
