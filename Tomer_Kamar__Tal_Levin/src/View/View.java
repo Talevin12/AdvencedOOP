@@ -15,7 +15,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -92,21 +95,24 @@ public class View {
 		vBoxOrderMenu.setAlignment(Pos.CENTER);
 		vBoxOrderMenu.setSpacing(20);
 	
-		this.sortOptionScene = new Scene(vBoxOrderMenu, 1000, 600);
+		this.sortOptionScene = new Scene(vBoxOrderMenu, 1000, 700);
 
 		//////////////////////////////////////////////////////////////////
 		
-		VBox naviMenu = new VBox(addProductBtn, undoBtn, showAllProductsBtn, searchProductBtn, showProfit, deleteAllBtn, sendPromotionBtn, showAcceptedCustomers/*, exitBtn*/);
+		VBox naviMenuFunctions = new VBox(addProductBtn, undoBtn, showAllProductsBtn, searchProductBtn, showProfit, deleteAllBtn, sendPromotionBtn, showAcceptedCustomers/*, exitBtn*/);
 		
-		naviMenu.setSpacing(20);
+		naviMenuFunctions.setSpacing(20);
 		
 		this.exitBtn.setMinSize(60, 30);
-		VBox naviMenuExit = new VBox(naviMenu, exitBtn);
-		naviMenuExit.setPadding(new Insets(10));
-		naviMenuExit.setSpacing(200);
+//		this.exitBtn.
+		BorderPane naviMenu = new BorderPane();
+		naviMenu.setTop(naviMenuFunctions);
+		naviMenu.setBottom(this.exitBtn);
 		
-		naviMenuExit.setMaxWidth(160);
-		naviMenuExit.setMinWidth(160);
+		naviMenu.setPadding(new Insets(10));
+		
+		naviMenu.setMaxWidth(160);
+		naviMenu.setMinWidth(160);
 		
 		addProductBtn.setOnAction(e->{this.mainVB.getChildren().clear(); this.mainVB.getChildren().add(addProductView());});
 		searchProductBtn.setOnAction(e->{this.mainVB.getChildren().clear(); this.mainVB.getChildren().add(searchProduct());});
@@ -114,8 +120,8 @@ public class View {
 		
 		this.mainVB = new VBox();
 
-		this.sp = new SplitPane(naviMenuExit, this.mainVB);
-		this.mainScene = new Scene(sp, 1000, 600);
+		this.sp = new SplitPane(naviMenu, this.mainVB);
+		this.mainScene = new Scene(sp, 1000, 700);
 		
 		//////////////////////////////////////////////////////////////////
 
@@ -125,6 +131,8 @@ public class View {
 	
 	public void setMainScene() {
 		Stage stage = new Stage();
+		stage.setMinWidth(1000);
+		stage.setMinHeight(700);
 		stage.setTitle("Product Management System");
 		stage.setScene(this.mainScene);
 		stage.show();
@@ -132,19 +140,25 @@ public class View {
 		startStage.close();
 	}
 	
-	private VBox addProductView() {
+	private Pane addProductView() {
 		this.catalogNumTF.setPromptText("Catalog number (*Required field* | length: 3)");
-		this.catalogNumTF.setMaxSize(250, 80);
+		this.catalogNumTF.setMinSize(325, 30);
+		this.catalogNumTF.setMaxSize(325, 30);
 		this.prodNameTF.setPromptText("Product name");
-		this.prodNameTF.setMaxSize(250, 80);
+		this.prodNameTF.setMinSize(325, 30);
+		this.prodNameTF.setMaxSize(325, 30);
 		this.storePriceTF.setPromptText("Store price");
-		this.storePriceTF.setMaxSize(250, 80);
+		this.storePriceTF.setMinSize(325, 30);
+		this.storePriceTF.setMaxSize(325, 30);
 		this.clientPriceTF.setPromptText("Client Price");
-		this.clientPriceTF.setMaxSize(250, 80);
+		this.clientPriceTF.setMinSize(325, 30);
+		this.clientPriceTF.setMaxSize(325, 30);
 		this.clientNameTF.setPromptText("Client name");
-		this.clientNameTF.setMaxSize(250, 80);
+		this.clientNameTF.setMinSize(325, 30);
+		this.clientNameTF.setMaxSize(325, 30);
 		this.phoneTF.setPromptText("Client phone number");
-		this.phoneTF.setMaxSize(250, 80);
+		this.phoneTF.setMinSize(325, 30);
+		this.phoneTF.setMaxSize(325, 30);
 		
 		ToggleGroup tg = new ToggleGroup();
 		this.promotionYesRB.setToggleGroup(tg);
@@ -156,14 +170,22 @@ public class View {
 		
 		addProdSubmitBtn.setMinSize(100, 50);
 		
-		addFeedback.setVisible(false);
+		this.addFeedback.setVisible(false);
 		this.addFeedback.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-		addFeedback.setFill(Color.LIMEGREEN);
+		this.addFeedback.setFill(Color.LIMEGREEN);
+		HBox feedbackHBox = new HBox(this.addFeedback);
+		feedbackHBox.setAlignment(Pos.CENTER);
 		
-		VBox root = new VBox(catalogNumTF, prodNameTF, storePriceTF, clientPriceTF, clientNameTF, phoneTF, promHB, addProdSubmitBtn, addFeedback);
-		root.setAlignment(Pos.CENTER);
-		root.setPadding(new Insets(100));
-		root.setSpacing(30);
+		
+		VBox addInputs = new VBox(catalogNumTF, prodNameTF, storePriceTF, clientPriceTF, clientNameTF, phoneTF, promHB, addProdSubmitBtn, addFeedback);
+		addInputs.setAlignment(Pos.CENTER);
+		addInputs.setPadding(new Insets(100));
+		addInputs.setSpacing(30);
+		
+		BorderPane root = new BorderPane();
+		root.setCenter(addInputs);
+		root.setBottom(feedbackHBox);
+		
 		return root;
 	}
 	
@@ -209,7 +231,7 @@ public class View {
 		return root;
 	}
 	
-	public void setMainVBox(VBox root) {
+	public void setMainVBox(Pane root) {
 		this.mainVB.getChildren().clear(); 
 		this.mainVB.getChildren().add(root);
 	}
