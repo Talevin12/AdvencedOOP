@@ -97,8 +97,8 @@ public class Model {
 			deleteProduct(getStore().getAllProducts().lastKey());
 		
 		getStore().getObservers().clear();	
-		this.memento.getMemento().clear();
-		this.memento.getCustomersMemento().clear();
+//		this.memento.getMemento().clear();
+//		this.memento.getCustomersMemento().clear();
 	}
 
 	public boolean updateMapFromFile() throws ClassNotFoundException, IOException {
