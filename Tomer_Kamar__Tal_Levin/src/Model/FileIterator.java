@@ -140,11 +140,11 @@ public class FileIterator implements Iterator<Entry<String, Product>> {
 		iterator.getRaf().writeBoolean(product.getCustomer().isAcceptPromotions());
 	}
 
-	public void deleteAllContent() throws FileNotFoundException, IOException {
-		FileIterator iterator = new FileIterator();
-		iterator.getRaf().setLength(4);
-		iterator.getRaf().close();
-	}
+//	public void deleteAllContent() throws FileNotFoundException, IOException {
+//		FileIterator iterator = new FileIterator();
+//		iterator.getRaf().setLength(4);
+//		iterator.getRaf().close();
+//	}
 
 	public boolean deleteProduct(String catalog) throws FileNotFoundException, IOException {
 		FileIterator iterator = new FileIterator();

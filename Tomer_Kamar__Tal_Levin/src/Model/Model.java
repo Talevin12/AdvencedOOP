@@ -91,11 +91,14 @@ public class Model {
 	}
 
 	public void deleteAllProducts() throws FileNotFoundException, IOException, ClassNotFoundException {
-		this.iterator.deleteAllContent();
+//		this.iterator.deleteAllContent();
+		
+		while(!getStore().getAllProducts().isEmpty())
+			deleteProduct(getStore().getAllProducts().lastKey());
+		
 		getStore().getObservers().clear();	
 		this.memento.getMemento().clear();
 		this.memento.getCustomersMemento().clear();
-		updateMapFromFile();
 	}
 
 	public boolean updateMapFromFile() throws ClassNotFoundException, IOException {
