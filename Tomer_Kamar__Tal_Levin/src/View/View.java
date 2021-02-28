@@ -153,7 +153,7 @@ public class View {
 		this.clientPriceTF.setPromptText("Client Price");
 		this.clientPriceTF.setMinSize(325, 30);
 		this.clientPriceTF.setMaxSize(325, 30);
-		this.clientNameTF.setPromptText("Client name");
+		this.clientNameTF.setPromptText("Client First name");
 		this.clientNameTF.setMinSize(325, 30);
 		this.clientNameTF.setMaxSize(325, 30);
 		this.phoneTF.setPromptText("Client phone number");

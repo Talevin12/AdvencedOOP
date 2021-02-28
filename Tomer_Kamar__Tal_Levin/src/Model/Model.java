@@ -10,13 +10,10 @@ import ModelCommands.ModelCommands;
 public class Model {
 	private ModelCommands modelCommands;
 	private StoreMemento memento;
-	//	private File productsFile;
 	private FileIterator iterator;
 
 	public Model() throws FileNotFoundException, IOException {
 		this.modelCommands = new ModelCommands(this);
-		//		this.memento = Store.getInstance().createMemento();
-		//		this.productsFile = new File("products.txt");
 		this.iterator = new FileIterator();
 	}
 
@@ -91,14 +88,11 @@ public class Model {
 	}
 
 	public void deleteAllProducts() throws FileNotFoundException, IOException, ClassNotFoundException {
-//		this.iterator.deleteAllContent();
-		
+		TreeMap<String, Product> temp = getStore().getAllProducts();
 		while(!getStore().getAllProducts().isEmpty())
 			deleteProduct(getStore().getAllProducts().lastKey());
 		
 		getStore().getObservers().clear();	
-//		this.memento.getMemento().clear();
-//		this.memento.getCustomersMemento().clear();
 	}
 
 	public boolean updateMapFromFile() throws ClassNotFoundException, IOException {

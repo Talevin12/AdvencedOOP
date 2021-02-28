@@ -42,13 +42,9 @@ public class Store implements StoreSender {
 	}
 	
 	public void setMemento(StoreMemento memento) {
-		this.allProducts = memento.getMemento();
-		this.observers = memento.getCustomersMemento();
+		this.allProducts = new TreeMap<String, Product>(memento.getMemento());
+		this.observers = new HashMap<Customer, String>(memento.getCustomersMemento());
 	}
-	
-//	public void removeCustomerFromMemento(StoreMemento memnto, Customer c) {
-//		memnto.removeObserver(c);
-//	}
 	
 	
 	@Override
