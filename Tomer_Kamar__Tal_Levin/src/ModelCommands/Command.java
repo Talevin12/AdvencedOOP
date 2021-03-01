@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import Model.Product;
-import javafx.scene.control.ListView;
 
 public interface Command {
 	

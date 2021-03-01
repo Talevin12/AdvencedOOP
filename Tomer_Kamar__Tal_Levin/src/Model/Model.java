@@ -88,7 +88,6 @@ public class Model {
 	}
 
 	public void deleteAllProducts() throws FileNotFoundException, IOException, ClassNotFoundException {
-		TreeMap<String, Product> temp = getStore().getAllProducts();
 		while(!getStore().getAllProducts().isEmpty())
 			deleteProduct(getStore().getAllProducts().lastKey());
 		

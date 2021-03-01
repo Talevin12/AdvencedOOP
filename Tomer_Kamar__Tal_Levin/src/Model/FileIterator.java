@@ -116,6 +116,7 @@ public class FileIterator implements Iterator<Entry<String, Product>> {
 		iterator.getRaf().setLength(0);
 		
 		Comparator<String> comparator = (Comparator<String>) treeMap.comparator();
+
 		if(comparator.getClass() == ascendingComparator.class)
 			iterator.getRaf().writeInt(1);
 		else if(comparator.getClass() == descendingComparator.class)
@@ -179,10 +180,12 @@ public class FileIterator implements Iterator<Entry<String, Product>> {
 			return catalog2.compareTo(catalog1);
 		}
 	}
-
+	
 	public static class insertionOrderComparator implements Comparator<String>{
 		@Override
 		public int compare(String catalog1, String catalog2) {
+			if(catalog2.compareTo(catalog1) == 0)
+				return 0;
 			return 1;
 		}
 	}
